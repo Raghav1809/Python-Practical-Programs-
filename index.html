@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Practicals</title>
+    <!-- Add Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+    <!-- Add Font Awesome for better icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --background-color: #f5f5f5;
+            --code-bg-color: #282c34;
+            --text-color: #333;
+            --light-text: #f5f5f5;
+            --container-bg: white;
+            --header-gradient-start: #3498db;
+            --header-gradient-end: #2980b9;
+            --info-bg: #f0f8ff;
+            --border-radius: 10px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        .dark-mode {
+            --primary-color: #61dafb;
+            --secondary-color: #4fa3d1;
+            --background-color: #1a1a1a;
+            --code-bg-color: #1e1e1e;
+            --text-color: #f0f0f0;
+            --container-bg: #2d2d2d;
+            --header-gradient-start: #2c3e50;
+            --header-gradient-end: #1a252f;
+            --info-bg: #2c3e50;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 80%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--container-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+            transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: background var(--transition-speed) ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .developer-info {
+            margin-top: 15px;
+            font-style: italic;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .controls {
+            padding: 20px;
+            background-color: rgba(249, 249, 249, 0.8);
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .dark-mode .controls {
+            background-color: rgba(45, 45, 45, 0.8);
+            border-bottom: 1px solid #444;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 300px;
+        }
+
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .select-wrapper:hover::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode select {
+            background-color: #3d3d3d;
+            border-color: #555;
+            color: #f0f0f0;
+        }
+
+        select:hover, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .copy-btn, .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn:hover, .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn:active, .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            gap: 10px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .dark-mode .search-container {
+            background: rgba(45, 45, 45, 0.8);
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .search-input {
+            background-color: #3d3d3d;
+            border-color: #555;
+            color: #f0f0f0;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .code-container {
+            padding: 25px;
+            transition: padding 0.3s ease;
+        }
+
+        .practical-info {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: var(--info-bg);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            transition: background-color var(--transition-speed) ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .practical-info h2 {
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .practical-info p {
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        pre {
+            background-color: var(--code-bg-color);
+            color: var(--light-text);
+            padding: 25px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+            font-family: 'Consolas', 'Courier New', monospace;
+            line-height: 1.5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        pre:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .run-container {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: var(--info-bg);
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .run-container h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .run-container h3 i {
+            font-size: 1.2rem;
+        }
+
+        .output {
+            background-color: var(--code-bg-color);
+            color: var(--light-text);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            min-height: 120px;
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            background-color: rgba(249, 249, 249, 0.8);
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        .dark-mode footer {
+            background-color: rgba(45, 45, 45, 0.8);
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+
+        .developer-credit {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 8px;
+        }
+
+        .highlight-search {
+            background-color: yellow;
+            color: black;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .select-wrapper {
+                width: 100%;
+            }
+            
+            .btn-group {
+                justify-content: center;
+            }
+            
+            .code-container {
+                padding: 15px;
+            }
+            
+            pre {
+                padding: 15px;
+            }
+            
+            .search-container {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
+        <header>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-code"></i></div>
+            </div>
+            <h1>Python Practicals</h1>
+            <p>Select a practical from the dropdown to view the code</p>
+            <div class="developer-info">Developed By RPV Developers</div>
+        </header>
+
+        <div class="controls">
+            <div class="select-wrapper">
+                <select id="practical-selector">
+                    <option value="" disabled selected>Select a Practical</option>
+                    <option value="1">Practical 1</option>
+                    <option value="2">Practical 2</option>
+                    <option value="3">Practical 3</option>
+                    <option value="4">Practical 4</option>
+                    <option value="5">Practical 5</option>
+                    <option value="6">Practical 6</option>
+                    <option value="7">Practical 7</option>
+                    <option value="8">Practical 8</option>
+                    <option value="9">Practical 9</option>
+                    <option value="10">Practical 10</option>
+                    <option value="11">Practical 11</option>
+                    <option value="12">Practical 12</option>
+                    <option value="13">Practical 13</option>
+                    <option value="14">Practical 14</option>
+                    <option value="15">Practical 15</option>
+                    <option value="16">Practical 16</option>
+                    <option value="17">Practical 17</option>
+                    <option value="18">Practical 18</option>
+                    <option value="19">Practical 19</option>
+                    <option value="20">Practical 20</option>
+                    <option value="21">Practical 21</option>
+                </select>
+            </div>
+            
+            <div class="btn-group">
+                <div class="tooltip">
+                    <button class="copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy Code
+                    </button>
+                    <span class="tooltiptext">Copy to clipboard</span>
+                </div>
+                
+                <div class="tooltip">
+                    <button class="btn" id="run-btn">
+                        <i class="fas fa-play"></i> Run Code
+                    </button>
+                    <span class="tooltiptext">Simulate code execution</span>
+                </div>
+                
+                <div class="tooltip">
+                    <button class="btn" id="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <span class="tooltiptext">Download as .py file</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="Search in code...">
+            <button class="btn" id="search-btn"><i class="fas fa-search"></i> Search</button>
+            <button class="btn" id="prev-btn"><i class="fas fa-arrow-left"></i> Previous</button>
+            <button class="btn" id="next-btn"><i class="fas fa-arrow-right"></i> Next</button>
+        </div>
+
+        <div class="code-container">
+            <div class="practical-info" id="practical-info">
+                <h2>Welcome to Python Practicals</h2>
+                <p>Please select a practical from the dropdown menu above to view the code.</p>
+            </div>
+            <pre><code class="language-python" id="code-display"># Select a practical to view the code</code></pre>
+            
+            <div class="run-container" id="run-container">
+                <h3><i class="fas fa-terminal"></i> Output:</h3>
+                <div class="output" id="output"></div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2023 Python Practicals | Created for Internal Examination Program
+            <div class="developer-credit">Developed By RPV Developers</div>
+        </footer>
+    </div>
+
+    <div class="notification" id="notification"><i class="fas fa-check-circle"></i> Code copied to clipboard!</div>
+
+    <!-- Add Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        const practicalSelector = document.getElementById('practical-selector');
+        const codeDisplay = document.getElementById('code-display');
+        const practicalInfoElement = document.getElementById('practical-info');
+        const copyBtn = document.getElementById('copy-btn');
+        const notification = document.getElementById('notification');
+        const themeToggle = document.getElementById('theme-toggle');
+        const runBtn = document.getElementById('run-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const runContainer = document.getElementById('run-container');
+        const outputElement = document.getElementById('output');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // Python code templates for each practical
+        const practicalCodes = {
+            1: ``,
+            2: `# 1. Write python program to display your name using Interactive Mode. (In Shell Mode)
+
+print("ABC")
+
+# 2. Implement the python program to display “MSBTE” using Script Mode. 
+
+print("MSBTE")
+`,
+            3: `# 1. Write a python program to convert U.S. dollars to Indian rupees. 
+ 
+usdollars = int(input("Enter the value in USD: "))
+rupees = usdollars * 80
+print(rupees)
+
+
+#2. Write a python program to swap the value of two variables. 
+
+a = int(input("Enter the value of a: "))
+b = int(input("Enter the value of b: "))
+a,b = b,a
+print("The value of a is: ", a)
+print("The value of b is: ", b)
+
+`,
+            4: `# 1. Write a python program to check if the input year is a leap year or not. 
+
+year = int(input("Enter a year: "))
+if(year % 4 == 0):
+    print("Leap year")
+else:
+    print("Not a leap year")
+
+
+# 2. Write a python program that takes the marks of 5 subjects and displays the grades. 
+
+sub1 = int(input("Enter the marks of subject 1: "))
+sub2 = int(input("Enter the marks of subject 2: "))
+sub3 = int(input("Enter the marks of subject 3: "))
+sub4 = int(input("Enter the marks of subject 4: "))
+sub5 = int(input("Enter the marks of subject 5: "))
+
+total = sub1 + sub2 + sub3 + sub4 + sub5
+if(total >= 90):
+    print("Grade A")
+elif(total >= 80):
+    print("Grade B")
+elif(total >= 70):
+    print("Grade C")
+elif(total >= 60):
+    print("Grade D")
+else:
+    print("Fail")`,
+            5: `# 1. Write a python  program to print Fibonacci series. 
+
+n = int(input("Enter number of terms: "))
+
+a, b = 0, 1
+print("Fibonacci Series:")
+
+for i in range(n):
+    print(a, end=" ")
+    c = a + b
+    a = b
+    b = c
+print("\n")
+
+# 2. Print the following patterns using loop:   
+# 1010101 
+# 10101 
+# 101 
+# 1 
+
+# Each row has a fixed number of characters
+lengths = [7, 5, 3, 1]
+
+for i in lengths:
+    count = 1  # Start with 1 in every row
+    for j in range(i):
+        print(count, end='')
+        count = 1 - count  # Toggle between 1 and 0
+    print()
+
+`,
+            6: `# 1. Write a python program to multiplies all the items in a list. 
+
+list1 = [1,2,3,4,5]
+print(list1)
+list2 = list1 * 2
+print(list2)
+
+
+# 2. Write a python program to find the common items from two list.
+
+list1 = [1,2,3,4,5]
+list2 = [1,3,7,8,9]
+print(list1)
+print(list2)
+for i in list1:
+    if i in list2:
+        print(i)`,
+            7: `# 1.Create a tuple and find the minimum and maximum number from it 
+
+t = (1,2,3,4,5,6,7,8,9,10)
+print(t)
+print(min(t))
+print(max(t))
+
+# 2.Write a python program to find the repeated items of a tuple. 
+
+tup = (1,2,3,4,5,6,7,8,9,2,6,4,5)
+dup = []
+for i in tup:
+    if tup.count(i) > 1 and i not in dup:
+        dup.append(i)  
+print(dup)`,
+            8: `# 1. Write a python program to perform following operations on set : Intersection of set, 
+# union of set, set difference, symmetric difference,   clear a set. 
+ 
+set1 = {1,2,3,4,5}
+set2 = {1,3,7,8,9}
+
+print("Intersection of set1 and set2 is : ",set1.intersection(set2))
+print("Union of set1 and set2 is : ",set1.union(set2))
+print("Difference of set1 and set2 is : ",set1.difference(set2))
+print("Symmetric difference of set1 and set2 is : ",set1.symmetric_difference(set2))
+set1.clear()
+print("Clearing set1 : ",set1)
+
+
+# 2. Write a python program  to find the length of a set.
+set1 = {1,2,3,4,5}
+print("Length of set1 is : ",len(set1))
+`,
+            9: `# 1.Write a python program to find the highest 3 values in dictionary. 
+
+d = {'a': 10, 'b': 20, 'c': 5, 'd': 15, 'e': 25}
+sorted_values = sorted(d.values(), reverse=True)
+highest_3_values = sorted_values[:3]
+print(highest_3_values)
+
+# 2. Write a python script to sort a dictionary by value. 
+
+d = {'a': 10, 'b': 20, 'c': 5, 'd': 15, 'e': 25}
+sorted_dict = sorted(d.values())
+print(sorted_dict)
+
+`,
+            10: `# Write a python function that accepts a string and calculate the number of upper case 
+# letters and lower case letter. 
+
+def count_upper_lower(string):
+    upper_count = 0
+    lower_count = 0
+    for char in string:
+        if char.isupper():
+            upper_count += 1
+        elif char.islower():
+            lower_count += 1
+    print(f"String :- {string} contains {upper_count} upper case letters and {lower_count} lower case letters ")
+
+
+str = input("Enter the string :- ")
+count_upper_lower(str) `,
+            11: `# 1.Write a python program to implement Multiple Inheritance 
+
+class A:
+    def getdata(self):
+        self.name = input("Enter the name :- ")
+        self.rollno = int(input("Enter the roll no :- "))
+
+class B:
+    def getmarks(self):
+        self.maths = int(input("Enter the maths marks :- "))
+        self.science = int(input("Enter the science marks :- "))
+
+class C(A,B):
+    def display(self):
+        print("Name :- ",self.name)
+        print("Roll no :- ",self.rollno)
+        print("Maths :- ",self.maths)
+        print("Science :- ",self.science)
+
+obj = C()
+obj.getdata()
+obj.getmarks()
+obj.display()
+
+
+# 2.Write a python program to implement Multilevel inheritance 
+
+class A:
+    def getdata(self):
+        self.name = input("Enter the name :- ")
+        self.rollno = int(input("Enter the roll no :- "))
+
+class B(A):
+    def getmarks(self):
+        self.maths = int(input("Enter the maths marks :- "))
+        self.science = int(input("Enter the science marks :- "))
+
+class C(B):
+    def display(self):
+        print("Name :- ",self.name)
+        print("Roll no :- ",self.rollno)
+        print("Maths :- ",self.maths)
+        print("Science :- ",self.science)
+
+obj = C()
+obj.getdata()
+obj.getmarks()
+obj.display()
+`,
+            12: `# 1 .Write a python program to display calendar of given month using calendar 
+# module. 
+
+import calendar
+mon = int(input("Enter the month :- "))
+year = int(input("Enter the year :- "))
+print(calendar.month(year,mon))
+
+# 2. Write a python program to calculate area and circumference of circle using 
+# inbuilt Math module. 
+
+import math
+r = int(input("Enter the radius :- "))
+print("Area of circle :- ",math.pi*r*r)
+print("Circumference of circle :- ",2*math.pi*r)
+
+
+# This modules are inbuilt modules in python we don't need to install them
+
+
+`,
+            13: `# Write a python program to create two matrices and perform addition, subtraction, 
+# multiplication and division operation on matrix using Numpy. 
+
+import numpy as np
+
+a = np.array([[1,2,3],[4,5,6],[7,8,9]])
+b = np.array([[9,8,7],[6,5,4],[3,2,1]])
+
+print("Addition of two matrix :- ")
+print(np.add(a,b))
+
+print("Subtraction of two matrix :- ")
+print(np.subtract(a,b))
+
+print("Multiplication of two matrix :- ")   
+print(np.multiply(a,b))
+
+print("Division of two matrix :- ")
+print(np.divide(a,b))
+`,
+            14: `# Write a python program to generate a random float where the value is between 5 to 50 
+# using python math module.   
+
+import math
+import random
+print(random.uniform(5,50))
+`,
+            15: `# Write a python program to calculate area and circumference of circle using inbuilt 
+# Math module. 
+
+import math
+
+radius = float(input("Enter the radius of the circle: "))
+
+area = math.pi * radius ** 2
+circumference = 2 * math.pi * radius
+
+print("Area of the circle is:", area)
+print("Circumference of the circle is:", circumference)`,
+            16: `# Write a program in Python to create user defined exception that will check whether 
+# the password is correct or not? 
+class passwordcheck(Exception):
+      pass
+
+correct_pass= "Pass123"
+user_password = input('Enter the Password Here :- ')
+
+try:
+      if(user_password != correct_pass):
+            raise passwordcheck("Invalid Password")
+      else:
+            print("Password is correct")
+
+except passwordcheck as e:
+    print(e)
+    
+
+`,
+            17: `# 1. Write a python program to check whether a number is even or odd. 
+
+num = int(input("Enter a number: "))
+
+if num % 2 == 0:
+    print("The number is even.")
+else:
+    print("The number is odd.")
+
+
+# 2. Write a python program to find out absolute value of an input number
+
+num = float(input("Enter a number: "))
+abs_value = abs(num)
+print("The absolute value of", num, "is", abs_value)
+`,
+            18: `# 1. Write a python program to Reverse given no. 
+
+num = input("Enter a number: ")
+rev_num = num[::-1]
+print("Reverse of the given number is: ", rev_num)
+
+# 2. Write a python program to that takes a number and check whether it is a palindrome or not.
+
+num = input("Enter a number: ")
+rev_num = num[::-1]
+if num == rev_num:
+    print("The given number is a palindrome.")
+else:
+    print("The given number is not a palindrome.")
+`,
+            19: `# Print the number in words for example:1234=>One Two Three Four 
+digit_words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+
+number = input("Enter a number: ")
+
+words_list = []
+
+for digit in number:
+    # Convert digit to corresponding word and add to list
+    words_list.append(digit_words[int(digit)])
+
+print("Number in words:", (words_list))
+`,
+            20: `# Write a Python script to concatenate following dictionaries to create a new one. 
+# Dict1={1:10,2:20} 
+# Dict2={3:30,4:40} 
+# Dict3={5:50,6:60} 
+
+Dict1={1:10,2:20}
+Dict2={3:30,4:40}
+Dict3={5:50,6:60}
+
+Dict4 = Dict1.copy()
+Dict4.update(Dict2)
+Dict4.update(Dict3)
+
+print(Dict4)
+`,
+            21: `# 1.Write a Python to concatenate two string. 
+
+str1 = "Hello"
+str2 = "World"
+str3 = str1 + " " + str2
+print(str3)
+
+# Another Solution
+str4 = str1 + str2
+print(str4)
+
+# 2. Write a Numpy program to generate six random integers between 10 and 30.
+
+import numpy as np
+arr = np.random.randint(10, 30, 6)
+print(arr)`
+        };
+
+        // Practical titles and descriptions
+        const practicalInfo = {
+            1: {
+                title: "Practical 1: ",
+                description: "Installation"
+            },
+            2: {
+                title: "Practical 2: ",
+                description: " 1) Write python program to display your name using Interactive Mode. 2) Implement the python program to display “MSBTE” using Script Mode."
+            },
+            3: {
+                title: "Practical 3: ",
+                description: "1. Write a python program to convert U.S. dollars to Indian rupees.  2. Write a python program to swap the value of two variables."
+            },
+            4: {
+                title: "Practical 4: ",
+                description: "1. Write a python program to check if the input year is a leap year or not.  2. Write a python program that takes the marks of 5 subjects and displays the grades."
+            },
+            5: {
+                title: "Practical 5: ",
+                description: "1. Write a python  program to print Fibonacci series.  2. Print the following patterns using loop:  "
+            },
+            6: {
+                title: "Practical 6: ",
+                description: "1. Write a python program to multiplies all the items in a list.  2. Write a python program to find the common items from two list."
+            },
+            7: {
+                title: "Practical 7: ",
+                description: "1.Create a tuple and find the minimum and maximum number from it.  2.Write a python program to find the repeated items of a tuple."
+            },
+            8: {
+                title: "Practical 8: ",
+                description: "1. Write a python program to perform following operations on set : Intersection of set, union of set, set difference, symmetric difference,clear a set.  2. Write a python program  to find the length of a set. "
+            },
+            9: {
+                title: "Practical 9: ",
+                description: "1.Write a python program to find the highest 3 values in dictionary.  2. Write a python script to sort a dictionary by value."
+            },
+            10: {
+                title: "Practical 10: ",
+                description: " Write a python function that accepts a string and calculate the number of upper case letters and lower case letter."
+            },
+            11: {
+                title: "Practical 11: ",
+                description: "1.Write a python program to implement Multiple Inheritance   2.Write a python program to implement Multilevel inheritance "
+            },
+            12: {
+                title: "Practical 12: ",
+                description: "1 .Write a python program to display calendar of given month using calendar module. 2. Write a python program to calculate area and circumference of circle using inbuilt Math module."
+            },
+            13: {
+                title: "Practical 13: ",
+                description: "Write a python program to create two matrices and perform addition, subtraction, multiplication and division operation on matrix using Numpy."
+            },
+            14: {
+                title: "Practical 14: ",
+                description: "Write a python program to generate a random float where the value is between 5 to 50 using python math module."
+            },
+            15: {
+                title: "Practical 15: ",
+                description: " Write a python program to calculate area and circumference of circle using inbuilt Math module."
+            },
+            16: {
+                title: "Practical 16: ",
+                description: "Write a program in Python to create user defined exception that will check whether the password is correct or not? "
+            },
+            17: {
+                title: "Practical 17: ",
+                description: "1. Write a python program to check whether a number is even or odd. 2. Write a python program to find out absolute value of an input number "
+            },
+            18: {
+                title: "Practical 18: ",
+                description: "1. Write a python program to Reverse given no.  2. Write a python program to that takes a number and check whether it is a palindrome or not."
+            },
+            19: {
+                title: "Practical 19: ",
+                description: "Print the number in words for example:1234=>One Two Three Four "
+            },
+            20: {
+                title: "Practical 20: ",
+                description: "Write a Python script to concatenate following dictionaries to create a new one. Dict1={1:10,2:20} Dict2={3:30,4:40} Dict3={5:50,6:60}"
+            },
+            21: {
+                title: "Practical 21:",
+                description: " 1.Write a Python to concatenate two string.  2. Write a Numpy program to generate six random integers between 10 and 30."
+            }
+        };
+
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // Update code display when a practical is selected
+        practicalSelector.addEventListener('change', function() {
+            const selectedPractical = this.value;
+            if (selectedPractical) {
+                // Update code display with syntax highlighting
+                codeDisplay.textContent = practicalCodes[selectedPractical];
+                Prism.highlightElement(codeDisplay);
+                
+                // Update practical info
+                const info = practicalInfo[selectedPractical];
+                practicalInfoElement.innerHTML = `
+                    <h2>${info.title}</h2>
+                    <p>${info.description}</p>
+                `;
+                
+                // Add animation effect
+                codeDisplay.parentElement.classList.add('highlight');
+                setTimeout(() => {
+                    codeDisplay.parentElement.classList.remove('highlight');
+                }, 500);
+
+                // Hide run container when changing practicals
+                runContainer.style.display = 'none';
+            }
+        });
+
+        // Fixed Copy code functionality
+        copyBtn.addEventListener('click', function() {
+            // Create a temporary textarea element to copy the text
+            const textarea = document.createElement('textarea');
+            textarea.value = codeDisplay.textContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Show notification
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        });
+
+        // Run code functionality (simple simulation)
+        runBtn.addEventListener('click', function() {
+            const code = codeDisplay.textContent;
+            runContainer.style.display = 'block';
+            
+            // Simple Python code simulator (very basic)
+            try {
+                let output = simulatePythonCode(code);
+                outputElement.textContent = output;
+            } catch (error) {
+                outputElement.textContent = `Error: ${error.message}`;
+            }
+            
+            // Scroll to output
+            runContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Download code as .py file
+        downloadBtn.addEventListener('click', function() {
+            const code = codeDisplay.textContent;
+            const selectedPractical = practicalSelector.value;
+            const fileName = `practical_${selectedPractical}.py`;
+            
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // Search functionality
+        let searchMatches = [];
+        let currentMatchIndex = -1;
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        prevBtn.addEventListener('click', function() {
+            if (searchMatches.length > 0) {
+                currentMatchIndex = (currentMatchIndex - 1 + searchMatches.length) % searchMatches.length;
+                highlightCurrentMatch();
+            }
+        });
+
+        nextBtn.addEventListener('click', function() {
+            if (searchMatches.length > 0) {
+                currentMatchIndex = (currentMatchIndex + 1) % searchMatches.length;
+                highlightCurrentMatch();
+            }
+        });
+
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (!searchTerm) return;
+            
+            // Get the code text content
+            const codeText = codeDisplay.textContent;
+            
+            // Find all matches
+            searchMatches = [];
+            let match;
+            const regex = new RegExp(searchTerm, 'gi');
+            
+            while ((match = regex.exec(codeText)) !== null) {
+                searchMatches.push({
+                    start: match.index,
+                    end: match.index + searchTerm.length
+                });
+            }
+            
+            if (searchMatches.length > 0) {
+                currentMatchIndex = 0;
+                highlightCurrentMatch();
+                notification.textContent = `Found ${searchMatches.length} matches`;
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            } else {
+                notification.textContent = 'No matches found';
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        function highlightCurrentMatch() {
+            // This is a simplified approach - in a real implementation, 
+            // you would need to handle the highlighting without disrupting Prism.js
+            const codeText = codeDisplay.textContent;
+            const match = searchMatches[currentMatchIndex];
+            
+            // Create a marked-up version of the code
+            const beforeMatch = codeText.substring(0, match.start);
+            const matchText = codeText.substring(match.start, match.end);
+            const afterMatch = codeText.substring(match.end);
+            
+            // Temporarily replace the content to highlight the match
+            const originalContent = codeDisplay.innerHTML;
+            codeDisplay.innerHTML = `${beforeMatch}<mark>${matchText}</mark>${afterMatch}`;
+            
+            // Scroll the match into view
+            const markElement = codeDisplay.querySelector('mark');
+            if (markElement) {
+                markElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            // Restore syntax highlighting after a brief delay
+            setTimeout(() => {
+                codeDisplay.textContent = codeText;
+                Prism.highlightElement(codeDisplay);
+            }, 1500);
+        }
+
+        // Very simple Python code simulator (handles only basic print statements and variables)
+        function simulatePythonCode(code) {
+            let output = '';
+            let variables = {};
+            
+            // Split the code into lines
+            const lines = code.split('\n');
+            
+            for (let line of lines) {
+                line = line.trim();
+                
+                // Skip comments and empty lines
+                if (line.startsWith('#') || line === '') {
+                    continue;
+                }
+                
+                // Handle print statements (very basic)
+                if (line.startsWith('print(')) {
+                    const printContent = line.substring(6, line.length - 1);
+                    
+                    // Handle string literals
+                    if (printContent.startsWith('"') && printContent.endsWith('"') ||
+                        printContent.startsWith("'") && printContent.endsWith("'")) {
+                        output += printContent.substring(1, printContent.length - 1) + '\n';
+                    }
+                    // Handle f-strings (very basic implementation)
+                    else if (printContent.startsWith('f"') || printContent.startsWith("f'")) {
+                        let fstring = printContent.substring(2, printContent.length - 1);
+                        
+                        // Replace {variable} with its value
+                        fstring = fstring.replace(/{([^}]+)}/g, (match, varName) => {
+                            return variables[varName.trim()] || 'undefined';
+                        });
+                        
+                        output += fstring + '\n';
+                    }
+                    // Handle variable printing
+                    else if (variables[printContent]) {
+                        output += variables[printContent] + '\n';
+                    }
+                    else {
+                        // For simplicity, just output the content
+                        output += printContent + '\n';
+                    }
+                }
+                // Handle variable assignment (very basic)
+                else if (line.includes('=') && !line.includes('==')) {
+                    const parts = line.split('=');
+                    const varName = parts[0].trim();
+                    const varValue = parts[1].trim();
+                    
+                    // Handle string literals
+                    if (varValue.startsWith('"') && varValue.endsWith('"') ||
+                        varValue.startsWith("'") && varValue.endsWith("'")) {
+                        variables[varName] = varValue.substring(1, varValue.length - 1);
+                    }
+                    // Handle numbers
+                    else if (!isNaN(varValue)) {
+                        variables[varName] = parseFloat(varValue);
+                    }
+                    else {
+                        variables[varName] = varValue;
+                    }
+                }
+            }
+            
+            return output || 'No output generated';
+        }
+
+        // Initialize Prism.js for the initial code
+        Prism.highlightElement(codeDisplay);
+    </script>
+</body>
+</html>
